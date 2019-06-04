@@ -6,11 +6,10 @@ import UsersController from "./controllers/users.controller"
 const logger = getLogger("UsersRouter");
 
 export default class UsersRouter {
- constructor() {
+  constructor() {
     logger.trace("Instanciando UsersRouter");
     this.route = express.Router();
     this.example(this.route);
-
     return this.route;
   }
 
@@ -19,10 +18,14 @@ export default class UsersRouter {
    * @param {express.Router} route
    */
   example(route) {
-    route.get("/example", (req, res) => {
-        logger.info("logger de metodo de ejemplo");
-        res.status(200).send("Mensaje de ejemplo");
-    });
+      route.get("/example", (req, res) => {
+        let controller = new UsersController();
+        controller.getRoles().then(resp=>{
+          res.status(200).send(resp);
+        });
+      });
   }
+
+
 
 }

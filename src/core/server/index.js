@@ -3,13 +3,13 @@ import { getLogger } from "../util/logger.util";
 import helmet from "helmet";
 
 import pkj from "../../../package.json";
-import { GENERAL_CONFIG } from "../../config/general.config";
 import Router from "./router.js";
 import {
   catchGenericError,
   catchNotFoundError
 } from "../middleware/error.middleware.js";
 import ConfigValidator from "../util/config-validator.util.js";
+import * as CONFIG from "../../config/general.config"
 
 const logger = getLogger("Server");
 
@@ -38,8 +38,8 @@ function starServer() {
   loadRouters(app);
   app.use(catchGenericError);
   app.use(catchNotFoundError);
-  logger.info("> Configurando puerto ", GENERAL_CONFIG.PUERTO);
-  app.listen(GENERAL_CONFIG.PUERTO);
+  logger.info("> Configurando puerto ", CONFIG.GLOBAL.PUERTO);
+  app.listen(CONFIG.GLOBAL.PUERTO);
   logger.info("> ".concat(pkj.artifactType, " ", pkj.name, " iniciado <"));
 }
 
@@ -71,7 +71,7 @@ function buildBasePath() {
  * Funcion main de arranque de servidor
  */
 function main() {
-  if (ConfigValidator.validateConfig(GENERAL_CONFIG)) {
+  if (ConfigValidator.validateConfig(CONFIG)) {
     starServer();
   } else {
     logger.fatal(
@@ -82,3 +82,4 @@ function main() {
 }
 
 main();
+
